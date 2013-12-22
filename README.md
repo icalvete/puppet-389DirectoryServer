@@ -18,7 +18,7 @@ node /ubuntu01.smartpurposes.net/ inherits test_defaults {
   class {'roles::ldap_server':
     cluster         => true,
     cluster_peer    => 'ubuntu02.smartpurposes.net'
-    $replication_id => '1'
+    replication_id => '1'
   }
 }
 
@@ -27,7 +27,7 @@ node /ubuntu02.smartpurposes.net/ inherits test_defaults {
   class {'roles::ldap_server':
     cluster         => true,
     cluster_peer    => 'ubuntu01.smartpurposes.net'
-    $replication_id => '2'
+    replication_id => '2'
   }
 }
 
