@@ -1,0 +1,67 @@
+#!/bin/sh
+#################################################################
+#
+# Based on /usr/share/dirsrv/script-templates/template-bak2db
+# of 389-ds-base package.
+#
+##################################################################
+
+prefix="{{DS-ROOT}}"
+if [ "$prefix" = "/" ] ; then
+    prefix=""
+fi
+
+libpath_add() {
+    [ -z "$1" ] && return
+    LD_LIBRARY_PATH=${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$1
+}
+
+libpath_add "$prefix{{SERVER-DIR}}"
+libpath_add "$prefix"
+libpath_add "$prefix/usr/lib64"
+libpath_add "$prefix"
+
+export LD_LIBRARY_PATH
+SHLIB_PATH=$LD_LIBRARY_PATH
+export SHLIB_PATH
+
+if [ $# -gt 4 ]
+then
+    echo "Usage: db2bak [archivedir] [-q] [-h]"
+    exit 1
+fi
+
+/bin/find <%= scope.lookupvar('ds389::backup_directory') -%>* -maxdepth 1 -regex ".*[^bin]" -type d -ctime +<%= scope.lookupvar('ds389::local_retention') -%> -exec rm -fr {} \;
+bak_dir=<%= scope.lookupvar('ds389::backup_directory') -%>/`hostname`-`date +%Y%m%d%H%M`
+dlevel=0
+quiet=0
+
+cd <%= scope.lookupvar('ds389::setup_ds_path') %>
+if [ "$#" -gt 0 ]
+then
+  if [ "$1" != "-q" ] && [ "$1" != "-d" ] && [ "$1" != "-h" ]
+  then
+    bak_dir=$1
+    shift
+  fi
+  while getopts "hqd:" flag
+  do
+    case $flag in
+        h) echo "Usage: db2bak [archivedir] [-q] [-h]"
+           exit 0;;
+        q) quiet=1;;
+        d) dlevel=$OPTARG;;
+    esac
+  done
+fi
+# If not quiet, set LDAP_DEBUG_BACKLDBM to debug level
+if [ $quiet -eq 0 ]
+then
+  if [ $dlevel -ne 524288 ]
+  then
+    dlevel=`expr $dlevel + 524288`
+  fi
+fi
+
+echo "Back up directory: $bak_dir"
+./ns-slapd db2archive -D <%= scope.lookupvar('ds389::dirsrv_dir') -%>/slapd-dir/ -a $bak_dir -d $dlevel

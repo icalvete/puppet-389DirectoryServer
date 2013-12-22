@@ -1,0 +1,4 @@
+dn: cn=from<%= @cluster_peer -%>,cn=replica,cn=<%= @ldap_suffix %>,cn=mapping tree,cn=config
+changetype: modify
+replace: nsds5beginreplicarefresh
+nsds5beginreplicarefresh: start

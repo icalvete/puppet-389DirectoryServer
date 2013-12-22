@@ -1,0 +1,33 @@
+#!/bin/sh
+
+prefix="{{DS-ROOT}}"
+if [ "$prefix" = "/" ] ; then
+    prefix=""
+fi
+
+libpath_add() {
+    [ -z "$1" ] && return
+    LD_LIBRARY_PATH=${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$1
+}
+
+libpath_add "$prefix{{SERVER-DIR}}"
+libpath_add "$prefix"
+libpath_add "$prefix/usr/lib64"
+libpath_add "$prefix"
+
+export LD_LIBRARY_PATH
+SHLIB_PATH=$LD_LIBRARY_PATH
+export SHLIB_PATH
+
+cd <%= scope.lookupvar('ds389::setup_ds_path') %>
+if [ $# -lt 4 ]
+then
+	echo "Usage: ldif2db -n backend_instance | {-s includesuffix}* [{-x excludesuffix}*]"
+	echo "               {-i ldiffile}* [-O]"
+	echo "Note: either \"-n backend_instance\" or \"-s includesuffix\" and \"-i ldiffile\" are required."
+	exit 1
+fi
+
+echo importing data ...
+./ns-slapd ldif2db -D <%= scope.lookupvar('ds389::dirsrv_dir') -%>/slapd-dir/ "$@" 2>&1
+exit $?

@@ -1,0 +1,64 @@
+#!/bin/sh
+
+prefix="{{DS-ROOT}}"
+if [ "$prefix" = "/" ] ; then
+    prefix=""
+fi
+
+libpath_add() {
+    [ -z "$1" ] && return
+    LD_LIBRARY_PATH=${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$1
+}
+
+libpath_add "$prefix{{SERVER-DIR}}"
+libpath_add "$prefix"
+libpath_add "$prefix/usr/lib64"
+libpath_add "$prefix"
+
+export LD_LIBRARY_PATH
+SHLIB_PATH=$LD_LIBRARY_PATH
+export SHLIB_PATH
+
+if [ $# -lt 1 ] || [ $# -gt 6 ]
+then
+    echo "Usage: bak2db archivedir [-n backendname] [-q] | [-h]"
+    exit 1
+elif [ "$1" = "-h" ]
+then
+    echo "Usage: bak2db archivedir [-n backendname] [-q] | [-h]"
+    exit 0
+else
+    archivedir=$1
+    shift
+fi
+benameopt=""
+dlevel=0
+quiet=0
+while getopts "hn:qd:" flag
+do
+    case $flag in
+        h) echo "Usage: bak2db archivedir [-n backendname] [-q] | [-h]"
+           exit 1;;
+        n) benameopt="-n $OPTARG";;
+        q) quiet=1;;
+        d) dlevel=$OPTARG;;
+    esac
+done
+if [ $quiet -eq 0 ]
+then
+  if [ $dlevel -ne 524288 ]
+  then
+    dlevel=`expr $dlevel + 524288`
+  fi
+fi
+
+if [ 1 = `expr $archivedir : "\/"` ]
+then
+    archivedir=$archivedir
+else
+    # relative
+    archivedir=`pwd`/$archivedir
+fi
+
+cd <%= scope.lookupvar('ds389::setup_ds_path') %>
+./ns-slapd archive2db -D <%= scope.lookupvar('ds389::dirsrv_dir') -%>/slapd-dir/ -a $archivedir $benameopt -d $dlevel

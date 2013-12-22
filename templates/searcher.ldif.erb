@@ -1,0 +1,8 @@
+dn: cn=<%= ldap_search_user -%>,<%= ldap_suffix %>
+cn: <%= ldap_search_user %>
+description: LDAP Searcher
+objectClass: simpleSecurityObject
+objectClass: organizationalRole
+objectClass: top
+structuralObjectClass: organizationalRole
+userPassword: <%= ldap_search_password %>
