@@ -1,4 +1,4 @@
-class ds389::params {
+class 389ds::params {
 
   $dirsrv_dir         = '/etc/dirsrv'
   $dirsrv_dir_lib     = '/var/lib/dirsrv'

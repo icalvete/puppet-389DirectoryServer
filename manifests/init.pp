@@ -1,16 +1,16 @@
-class ds389 (
+class 389ds (
 
   $backup_local          = true,
   $cluster               = false,
   $cluster_peer          = undef,
   $replication_id        = undef,
-  $backup_directory      = $ds389::params::backup_directory,
-  $backup_ldap_directory = $ds389::params::backup_ldap_directory,
-  $dirsrv_dir            = $ds389::params::dirsrv_dir,
-  $setup_ds_path         = $ds389::params::setup_ds_path,
-  $local_retention       = $ds389::params::local_retention,
+  $backup_directory      = $389ds::params::backup_directory,
+  $backup_ldap_directory = $389ds::params::backup_ldap_directory,
+  $dirsrv_dir            = $389ds::params::dirsrv_dir,
+  $setup_ds_path         = $389ds::params::setup_ds_path,
+  $local_retention       = $389ds::params::local_retention,
 
-) inherits ds389::params {
+) inherits 389ds::params {
 
   if $cluster {
     if ! $cluster_peer {
@@ -21,40 +21,40 @@ class ds389 (
     }
   }
 
-  anchor{'ds389::begin':
-    before => Class['ds389::install'],
+  anchor{'389ds::begin':
+    before => Class['389ds::install'],
   }
 
-  class {'ds389::install':
-    require => Anchor['ds389::begin'],
-    before  => Class['ds389::config'],
+  class {'389ds::install':
+    require => Anchor['389ds::begin'],
+    before  => Class['389ds::config'],
   }
 
-  class {'ds389::config':
-    require => Class['ds389::install'],
-    before  => Class['ds389::service'],
+  class {'389ds::config':
+    require => Class['389ds::install'],
+    before  => Class['389ds::service'],
   }
 
-  class {'ds389::service':
-    require => Class['ds389::config'],
-    before  => Class['ds389::cluster'],
+  class {'389ds::service':
+    require => Class['389ds::config'],
+    before  => Class['389ds::cluster'],
   }
 
-  class {'ds389::cluster':
-    require        => Class['ds389::service'],
-    before         => Class['ds389::backup'],
+  class {'389ds::cluster':
+    require        => Class['389ds::service'],
+    before         => Class['389ds::backup'],
     cluster        => $cluster,
     cluster_peer   => $cluster_peer,
     replication_id => $replication_id
   }
 
-  class {'ds389::backup':
-    require       => Class['ds389::cluster'],
-    before        => Anchor['ds389::end'],
+  class {'389ds::backup':
+    require       => Class['389ds::cluster'],
+    before        => Anchor['389ds::end'],
     backup_local  => $backup_local,
   }
 
-  anchor{'ds389::end':
-    require => Class['ds389::backup'],
+  anchor{'389ds::end':
+    require => Class['389ds::backup'],
   }
 }

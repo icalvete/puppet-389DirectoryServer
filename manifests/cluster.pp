@@ -1,4 +1,4 @@
-class ds389::cluster (
+class 389ds::cluster (
 
   $cluster             = false,
   $cluster_peer        = undef,
@@ -35,15 +35,15 @@ class ds389::cluster (
       mode    => '0640'
     }
 
-    exec {'config_ds389_ha':
+    exec {'config_389ds_ha':
       command => "/usr/bin/ldapadd -h localhost -p 389 -D '${ldap_admin_user}' -w ${ldap_admin_password} -f ${config_ha_file}",
       user    => 'root',
       unless  => "/usr/bin/ldapsearch -h localhost -p 389 -D '${ldap_admin_user}' -w ${ldap_admin_password} -s sub -b cn=config '(cn=replication manager)' | grep numEntries",
       require => File[$config_ha_file],
-      before  => Exec['enable_ds389_ha']
+      before  => Exec['enable_389ds_ha']
     }
 
-    exec {'enable_ds389_ha':
+    exec {'enable_389ds_ha':
       command => "/usr/bin/ldapadd -h localhost -p 389 -D '${ldap_admin_user}' -w ${ldap_admin_password} -f ${enable_ha_file}",
       user    => 'root',
       onlyif  => "/usr/bin/ldapsearch -h ${cluster_peer} -p 389 -D '${ldap_admin_user}' -w ${ldap_admin_password} -s sub -b cn=config '(cn=replication manager)' | grep numEntries",

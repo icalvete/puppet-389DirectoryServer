@@ -1,13 +1,13 @@
-class ds389::service {
+class 389ds::service {
 
-  service{$ds389::params::service_name:
+  service{$389ds::params::service_name:
     ensure     => running,
     enable     => true,
     hasstatus  => true,
     hasrestart => true,
   }
   # This service has status but doesn't work
-  service{$ds389::params::admin_service_name:
+  service{$389ds::params::admin_service_name:
     ensure     => running,
     enable     => true,
     hasstatus  => false,

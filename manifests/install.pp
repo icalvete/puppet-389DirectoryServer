@@ -1,4 +1,4 @@
-class ds389::install {
+class 389ds::install {
 
   case $::operatingsystem {
     /^(CentOS|RedHat)$/:{
@@ -25,11 +25,11 @@ class ds389::install {
     }
   }
 
-  package {$ds389::params::fonts:
+  package {$389ds::params::fonts:
     ensure  => present
   }
 
-  package{ $ds389::params::package:
+  package{ $389ds::params::package:
     ensure  => present
   }
 }
