@@ -31,12 +31,12 @@ then
     exit 1
 fi
 
-/bin/find <%= scope.lookupvar('ds389::backup_directory') -%>* -maxdepth 1 -regex ".*[^bin]" -type d -ctime +<%= scope.lookupvar('ds389::local_retention') -%> -exec rm -fr {} \;
-bak_dir=<%= scope.lookupvar('ds389::backup_directory') -%>/`hostname`-`date +%Y%m%d%H%M`
+/bin/find <%= scope.lookupvar('389ds::backup_directory') -%>* -maxdepth 1 -regex ".*[^bin]" -type d -ctime +<%= scope.lookupvar('ds389::local_retention') -%> -exec rm -fr {} \;
+bak_dir=<%= scope.lookupvar('389ds::backup_directory') -%>/`hostname`-`date +%Y%m%d%H%M`
 dlevel=0
 quiet=0
 
-cd <%= scope.lookupvar('ds389::setup_ds_path') %>
+cd <%= scope.lookupvar('389ds::setup_ds_path') %>
 if [ "$#" -gt 0 ]
 then
   if [ "$1" != "-q" ] && [ "$1" != "-d" ] && [ "$1" != "-h" ]
@@ -64,4 +64,4 @@ then
 fi
 
 echo "Back up directory: $bak_dir"
-./ns-slapd db2archive -D <%= scope.lookupvar('ds389::dirsrv_dir') -%>/slapd-dir/ -a $bak_dir -d $dlevel
+./ns-slapd db2archive -D <%= scope.lookupvar('389ds::dirsrv_dir') -%>/slapd-dir/ -a $bak_dir -d $dlevel

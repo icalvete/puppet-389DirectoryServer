@@ -14,10 +14,10 @@ class 389ds (
 
   if $cluster {
     if ! $cluster_peer {
-      fail("Cluster node needs a peer. Set cluster_peer param.")
+      fail('Cluster node needs a peer. Set cluster_peer param.')
     }
     if ! $replication_id {
-      fail("Cluster node needs replication_id param.")
+      fail('Cluster node needs replication_id param.')
     }
   }
 

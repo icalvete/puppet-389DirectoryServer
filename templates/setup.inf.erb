@@ -1,7 +1,7 @@
 [General]
 FullMachineName= <%= fqdn %>
-SuiteSpotUserID= <%= scope.lookupvar('ds389::params::ds_user') %>
-SuiteSpotGroup= <%= scope.lookupvar('ds389::params::ds_group') %>
+SuiteSpotUserID= <%= scope.lookupvar('389ds::params::ds_user') %>
+SuiteSpotGroup= <%= scope.lookupvar('389ds::params::ds_group') %>
 AdminDomain= <%= ldap_domain %>
 ConfigDirectoryAdminID= admin
 ConfigDirectoryAdminPwd= <%= ldap_admin_password %>

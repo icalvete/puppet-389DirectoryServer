@@ -60,5 +60,5 @@ else
     archivedir=`pwd`/$archivedir
 fi
 
-cd <%= scope.lookupvar('ds389::setup_ds_path') %>
-./ns-slapd archive2db -D <%= scope.lookupvar('ds389::dirsrv_dir') -%>/slapd-dir/ -a $archivedir $benameopt -d $dlevel
+cd <%= scope.lookupvar('389ds::setup_ds_path') %>
+./ns-slapd archive2db -D <%= scope.lookupvar('389ds::dirsrv_dir') -%>/slapd-dir/ -a $archivedir $benameopt -d $dlevel

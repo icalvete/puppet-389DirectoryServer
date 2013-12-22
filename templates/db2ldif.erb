@@ -57,17 +57,17 @@ make_ldiffile()
     done
 
     if [ "$be" = "" ]; then
-    echo <%= scope.lookupvar('ds389::backup_directory') -%>/`date +%Y_%m_%d_%H%M%S`.ldif
+    echo <%= scope.lookupvar('389ds::backup_directory') -%>/`date +%Y_%m_%d_%H%M%S`.ldif
     else
-    echo <%= scope.lookupvar('ds389::backup_directory') -%>/${be}-`date +%Y_%m_%d_%H%M%S`.ldif
+    echo <%= scope.lookupvar('389ds::backup_directory') -%>/${be}-`date +%Y_%m_%d_%H%M%S`.ldif
     fi
     return 0
 }
 
 
-/bin/find <%= scope.lookupvar('ds389::backup_directory') -%>/*.ldif -maxdepth 1 -regex ".*[^bin]" -type f -ctime +<%= scope.lookupvar('ds389::local_retention') -%> -exec rm -fr {} \;
+/bin/find <%= scope.lookupvar('389ds::backup_directory') -%>/*.ldif -maxdepth 1 -regex ".*[^bin]" -type f -ctime +<%= scope.lookupvar('ds389::local_retention') -%> -exec rm -fr {} \;
 
-cd <%= scope.lookupvar('ds389::setup_ds_path') %>
+cd <%= scope.lookupvar('389ds::setup_ds_path') %>
 if [ "$#" -lt 2 ];
 then
     echo "Usage: db2ldif {-n backend_instance}* | {-s includesuffix}*"
@@ -83,7 +83,7 @@ rn=$?
 echo "Exported ldif file: $ldif_file"
 if [ $rn -eq 1 ]
 then
-./ns-slapd db2ldif -D <%= scope.lookupvar('ds389::dirsrv_dir') -%>/slapd-dir/ "$@"
+./ns-slapd db2ldif -D <%= scope.lookupvar('389ds::dirsrv_dir') -%>/slapd-dir/ "$@"
 else
-./ns-slapd db2ldif -D <%= scope.lookupvar('ds389::dirsrv_dir') -%>/slapd-dir/ -a $ldif_file "$@"
+./ns-slapd db2ldif -D <%= scope.lookupvar('389ds::dirsrv_dir') -%>/slapd-dir/ -a $ldif_file "$@"
 fi

@@ -13,7 +13,7 @@ class 389ds::config {
     owner   => root,
     group   => root,
   }
-  exec{"create_dirsrv":
+  exec{'create_dirsrv':
     command => "${389ds::params::setup_ds_path}/${ds389::params::installer} -s -f ${ds389::params::dirsrv_dir}/setup.inf",
     path    => ['/usr/bin','/usr/sbin','/bin','/sbin'],
     creates => "${389ds::params::dirsrv_dir}/slapd-dir",
