@@ -27,17 +27,14 @@ class 389ds (
 
   class {'389ds::install':
     require => Anchor['389ds::begin'],
-    before  => Class['389ds::config'],
   }
 
   class {'389ds::config':
     require => Class['389ds::install'],
-    before  => Class['389ds::service'],
   }
 
   class {'389ds::service':
     require => Class['389ds::config'],
-    before  => Class['389ds::cluster'],
   }
 
   class {'389ds::cluster':
