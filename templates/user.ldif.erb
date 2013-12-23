@@ -1,0 +1,11 @@
+dn: cn=<%= user -%>,<%= ou -%>,<%= ldap_suffix %>
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetorgperson
+cn: <%= user %>
+uid: <%= user %>
+givenName: <%= user %>
+sn: <%= user %>
+description: LDAP user
+userPassword: <%= pass %>

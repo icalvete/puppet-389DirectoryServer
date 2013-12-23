@@ -1,20 +1,29 @@
 class 389ds::params {
 
-  $dirsrv_dir         = '/etc/dirsrv'
-  $dirsrv_dir_lib     = '/var/lib/dirsrv'
-  $setup_ds_path      = '/usr/sbin'
-  $service_name       = 'dirsrv'
-  $admin_service_name = 'dirsrv-admin'
+  $ldap_host               = hiera('ldap_host')
+  $ldap_domain             = hiera('ldap_domain')
+  $ldap_suffix             = hiera('ldap_suffix')
+  $ldap_admin_user         = hiera('ldap_admin_user')
+  $ldap_admin_pass         = hiera('ldap_admin_pass')
+  $ldap_console_admin_pass = hiera('ldap_console_admin_pass')
+  $ldap_search_user        = hiera('ldap_search_user')
+  $ldap_search_pass        = hiera('ldap_search_pass')
 
-  $backup_directory   = '/srv/ldap'
-  $backup_directorys  = "${backup_directory}/bin"
+  $dirsrv_dir              = '/etc/dirsrv'
+  $dirsrv_dir_lib          = '/var/lib/dirsrv'
+  $setup_ds_path           = '/usr/sbin'
+  $service_name            = 'dirsrv'
+  $admin_service_name      = 'dirsrv-admin'
 
-  $backup_ldap_tool   = "${backup_directory}/${backup_ldap_directory}/bin/db2bak"
-  $restore_ldap_tool  = "${backup_directory}/${backup_ldap_directory}/bin/bak2db"
-  $backup_ldif_tool   = "${backup_directory}/${backup_ldap_directory}/bin/db2ldif"
-  $restore_ldif_tool  = "${backup_directory}/${backup_ldap_directory}/bin/ldif2db"
+  $backup_directory        = '/srv/ldap'
+  $backup_directorys       = "${backup_directory}/bin"
 
-  $local_retention    = '3'
+  $backup_ldap_tool        = "${backup_directory}/${backup_ldap_directory}/bin/db2bak"
+  $restore_ldap_tool       = "${backup_directory}/${backup_ldap_directory}/bin/bak2db"
+  $backup_ldif_tool        = "${backup_directory}/${backup_ldap_directory}/bin/db2ldif"
+  $restore_ldif_tool       = "${backup_directory}/${backup_ldap_directory}/bin/ldif2db"
+
+  $local_retention         = '3'
 
   case $::operatingsystem {
     /^(CentOS|RedHat)$/:{
@@ -33,6 +42,7 @@ class 389ds::params {
                       '389-dsgw',
                       '389-console',
                       'idm-console-framework',
+                      'ldap-utils'
                     ]
       $fonts      = [
                       'xorg-x11-fonts-Type1',
@@ -62,7 +72,8 @@ class 389ds::params {
                     '389-ds',
                     '389-admin',
                     '389-ds-base',
-                    '389-ds-console'
+                    '389-ds-console',
+                    'ldap-utils'
                     ]
       $fonts     = [
                     'xfonts-75dpi',

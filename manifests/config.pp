@@ -1,11 +1,13 @@
 class 389ds::config {
 
-  $ldap_domain          = hiera('ldap_domain')
-  $ldap_suffix          = hiera('ldap_suffix')
-  $ldap_admin_user      = hiera('ldap_admin_user')
-  $ldap_admin_password  = hiera('ldap_admin_password')
-  $ldap_search_user     = hiera('ldap_search_user')
-  $ldap_search_password = hiera('ldap_search_password')
+  $ldap_host               = $389ds::params::ldap_host
+  $ldap_domain             = $389ds::params::ldap_domain
+  $ldap_suffix             = $389ds::params::ldap_suffix
+  $ldap_admin_user         = $389ds::params::ldap_admin_user
+  $ldap_admin_pass         = $389ds::params::ldap_admin_pass
+  $ldap_console_admin_pass = $389ds::params::ldap_console_admin_pass
+  $ldap_search_user        = $389ds::params::ldap_search_user
+  $ldap_search_password    = $389ds::params::ldap_search_password
 
   file{"${389ds::params::dirsrv_dir}/setup.inf":
     content => template("${module_name}/setup.inf.erb"),
@@ -13,19 +15,22 @@ class 389ds::config {
     owner   => root,
     group   => root,
   }
+
   exec{'create_dirsrv':
-    command => "${389ds::params::setup_ds_path}/${ds389::params::installer} -s -f ${ds389::params::dirsrv_dir}/setup.inf",
+    command => "${389ds::params::setup_ds_path}/${389ds::params::installer} -s -f ${389ds::params::dirsrv_dir}/setup.inf",
     path    => ['/usr/bin','/usr/sbin','/bin','/sbin'],
     creates => "${389ds::params::dirsrv_dir}/slapd-dir",
     require => File["${389ds::params::dirsrv_dir}/setup.inf"]
   }
-  file{'create_nonprivilege_user_ldif':
-    path    => "${389ds::params::dirsrv_dir}/searcher.ldif",
-    content => template("${module_name}/searcher.ldif.erb"),
+
+  389ds::user{'searcher':
+    pass => hiera('ldap_search_pass'),
+    ou   => 'ou=Special Users'
   }
-  exec{'creat_nonprivilege_user':
-    command => "/usr/bin/ldapadd -D '${ldap_admin_user}' -x -w ${ldap_admin_password} -f ${389ds::params::dirsrv_dir}/searcher.ldif",
-    require => [Exec['create_dirsrv'], File['create_nonprivilege_user_ldif']],
-    unless  => "/usr/bin/ldapsearch -D 'cn=${ldap_search_user},${ldap_suffix}' -b '${ldap_suffix}' -x -w ${ldap_search_password} 'cn=${ldap_search_user}'"
+
+  $jenkins_admin_user = hiera('jenkins_admin_user')
+  389ds::user{$jenkins_admin_user:
+    pass => hiera('jenkins_admin_pass'),
+    ou   => 'ou=Special Users'
   }
 }
