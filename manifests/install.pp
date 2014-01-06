@@ -11,7 +11,7 @@ class 389ds::install {
         command => '/usr/bin/add-apt-repository ppa:ubuntu-389-directory-server/ppa',
         require => Package['python-software-properties'],
         notify  => Exec['update_389ds_repo'],
-        unless  => '/usr/bin/test -f /etc/apt/sources.list.d/ubuntu-389-directory-server-ppa-precise.list'
+        unless  => "/usr/bin/test -f /etc/apt/sources.list.d/ubuntu-389-directory-server-ppa-${::lsbdistcodename}.list"
       }
 
       exec {'update_389ds_repo':
