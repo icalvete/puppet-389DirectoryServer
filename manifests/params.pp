@@ -15,13 +15,14 @@ class 389ds::params {
   $service_name            = 'dirsrv'
   $admin_service_name      = 'dirsrv-admin'
 
-  $backup_directory        = '/srv/ldap'
+  $backup_dir              = hiera('backup_dir')
+  $backup_directory        = "${$backup_dir}/ldap"
   $backup_directorys       = "${backup_directory}/bin"
 
-  $backup_ldap_tool        = "${backup_directory}/${backup_ldap_directory}/bin/db2bak"
-  $restore_ldap_tool       = "${backup_directory}/${backup_ldap_directory}/bin/bak2db"
-  $backup_ldif_tool        = "${backup_directory}/${backup_ldap_directory}/bin/db2ldif"
-  $restore_ldif_tool       = "${backup_directory}/${backup_ldap_directory}/bin/ldif2db"
+  $backup_ldap_tool        = "${backup_directory}/bin/db2bak"
+  $restore_ldap_tool       = "${backup_directory}/bin/bak2db"
+  $backup_ldif_tool        = "${backup_directory}/bin/db2ldif"
+  $restore_ldif_tool       = "${backup_directory}/bin/ldif2db"
 
   $local_retention         = '3'
 
