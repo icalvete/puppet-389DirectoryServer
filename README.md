@@ -1,6 +1,6 @@
 #puppet-389DirectoryServer
 
-
+Puppet manifest to install and configure 389DirectoryServe
 
 [![Build Status](https://secure.travis-ci.org/icalvete/puppet-389DirectoryServer.png)](http://travis-ci.org/icalvete/puppet-389DirectoryServer)
 
