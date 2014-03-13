@@ -66,7 +66,7 @@ make_ldiffile()
 
 find_bynary=`which find`
 
-$find_bynary <%= scope.lookupvar('389ds::backup_directory') -%>/*.ldif -maxdepth 1 -regex ".*[^bin]" -type f -ctime +<%= scope.lookupvar('ds389::local_retention') -%> -exec rm -fr {} \;
+$find_bynary <%= scope.lookupvar('389ds::backup_directory') -%>/*.ldif -maxdepth 1 -regex ".*[^bin]" -type f -ctime +<%= scope.lookupvar('389ds::local_retention') -%> -exec rm -fr {} \;
 
 cd <%= scope.lookupvar('389ds::setup_ds_path') %>
 if [ "$#" -lt 2 ];
