@@ -12,7 +12,7 @@ See [389 Directory Server site](http://directory.fedoraproject.org/wiki/Main_Pag
 ##Example:
 
 
-```
+```puppet
 node /ubuntu01.smartpurposes.net/ inherits test_defaults {
 
   class {'roles::ldap_server':
