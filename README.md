@@ -16,8 +16,8 @@ See [389 Directory Server site](http://directory.fedoraproject.org/wiki/Main_Pag
 node /ubuntu01.smartpurposes.net/ inherits test_defaults {
 
   class {'roles::ldap_server':
-    cluster         => true,
-    cluster_peer    => 'ubuntu02.smartpurposes.net'
+    cluster        => true,
+    cluster_peer   => 'ubuntu02.smartpurposes.net'
     replication_id => '1'
   }
 }
@@ -25,8 +25,8 @@ node /ubuntu01.smartpurposes.net/ inherits test_defaults {
 node /ubuntu02.smartpurposes.net/ inherits test_defaults {
   
   class {'roles::ldap_server':
-    cluster         => true,
-    cluster_peer    => 'ubuntu01.smartpurposes.net'
+    cluster        => true,
+    cluster_peer   => 'ubuntu01.smartpurposes.net'
     replication_id => '2'
   }
 }
