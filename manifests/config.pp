@@ -27,10 +27,4 @@ class 389ds::config {
     pass => hiera('ldap_search_pass'),
     ou   => 'ou=Special Users'
   }
-
-  $jenkins_admin_user = hiera('jenkins_admin_user')
-  389ds::user{$jenkins_admin_user:
-    pass => hiera('jenkins_admin_pass'),
-    ou   => 'ou=Special Users'
-  }
 }
