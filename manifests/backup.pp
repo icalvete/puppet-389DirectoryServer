@@ -8,6 +8,12 @@ class 389ds::backup (
     shell => '/bin/bash',
   }
 
+  if ! defined(File[$389ds::params::backup_dir]) {
+    file {$389ds::params::backup_dir:
+      ensure => directory,
+    }
+  }
+
   if $backup_local {
     cron { 'ldap_backup':
       command => $389ds::params::backup_ldap_tool,
