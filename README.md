@@ -1,13 +1,18 @@
 #puppet-389DirectoryServer
 
-Puppet manifest to install and configure 389DirectoryServe
+Puppet manifest to install and configure 389DirectoryServer
 
 [![Build Status](https://secure.travis-ci.org/icalvete/puppet-389DirectoryServer.png)](http://travis-ci.org/icalvete/puppet-389DirectoryServer)
 
 See [389 Directory Server site](http://directory.fedoraproject.org/wiki/Main_Page)
 
 * [hiera](http://docs.puppetlabs.com/hiera/1/index.html)
-* https://github.com/icalvete/puppet-common 
+
+## Requisites
+
+Only tested in ubuntu 14.04 LTS (trusty) for osfamily = Debian
+
+(Old version supports 13.10 (Saucy) using a ppa repo but now this makes no sense to me)
 
 ##Example:
 
