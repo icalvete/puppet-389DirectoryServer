@@ -1,19 +1,19 @@
 [General]
-FullMachineName= <%= fqdn %>
+FullMachineName= <%= @fqdn %>
 SuiteSpotUserID= <%= scope.lookupvar('389ds::params::ds_user') %>
 SuiteSpotGroup= <%= scope.lookupvar('389ds::params::ds_group') %>
-AdminDomain= <%= ldap_domain %>
+AdminDomain= <%= @ldap_domain %>
 ConfigDirectoryAdminID= admin
-ConfigDirectoryAdminPwd= <%= ldap_console_admin_pass %>
-ConfigDirectoryLdapURL= ldap://<%= fqdn -%>:389/o=NetscapeRoot
+ConfigDirectoryAdminPwd= <%= @ldap_console_admin_pass %>
+ConfigDirectoryLdapURL= ldap://<%= @fqdn -%>:389/o=NetscapeRoot
 
 [slapd]
 SlapdConfigForMC= Yes
 UseExistingMC= 0
 ServerPort= 389
 ServerIdentifier= dir
-Suffix= <%= ldap_suffix %>
-RootDN= <%= ldap_admin_user %>
-RootDNPwd= <%= ldap_admin_pass %>
+Suffix= <%= @ldap_suffix %>
+RootDN= <%= @ldap_admin_user %>
+RootDNPwd= <%= @ldap_admin_pass %>
 AddSampleEntries= No
 
