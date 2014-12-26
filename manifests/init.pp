@@ -1,5 +1,6 @@
 class 389ds (
 
+  $ssl                   = true,
   $backup_local          = true,
   $cluster               = false,
   $cluster_peer          = undef,
@@ -30,7 +31,7 @@ class 389ds (
   }
 
   class {'389ds::config':
-    require => Class['389ds::install'],
+    notify => Class['389ds::service'],
   }
 
   class {'389ds::service':
@@ -46,9 +47,14 @@ class 389ds (
   }
 
   class {'389ds::backup':
-    require       => Class['389ds::cluster'],
-    before        => Anchor['389ds::end'],
-    backup_local  => $backup_local,
+    require      => Class['389ds::cluster'],
+    before       => Class['389ds::postconfig'],
+    backup_local => $backup_local,
+  }
+
+  class {'389ds::postconfig':
+    require => Class['389ds::backup'],
+    before  => Anchor['389ds::end'],
   }
 
   anchor{'389ds::end':

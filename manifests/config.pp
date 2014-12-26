@@ -27,4 +27,21 @@ class 389ds::config {
     pass => hiera('ldap_search_pass'),
     ou   => 'ou=Special Users'
   }
+
+  if $389ds::ssl {
+    file{"${389ds::params::dirsrv_dir}/setupssl.sh":
+      content => template("${module_name}/setupssl.sh.erb"),
+      mode    => '0744',
+      owner   => root,
+      group   => root,
+      require => Exec['create_dirsrv']
+    }
+
+    exec{ 'enable_ssl':
+      command => "${389ds::params::dirsrv_dir}/setupssl.sh",
+      user    => 'root',
+      unless  => "/usr/bin/test -f ${389ds::params::dirsrv_dir}/password.conf",
+      require => File["${389ds::params::dirsrv_dir}/setupssl.sh"]
+    }
+  }
 }
