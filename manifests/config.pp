@@ -8,6 +8,16 @@ class 389ds::config {
   $ldap_console_admin_pass = $389ds::params::ldap_console_admin_pass
   $ldap_search_user        = $389ds::params::ldap_search_user
   $ldap_search_password    = $389ds::params::ldap_search_password
+  
+  file{"${389ds::params::dirsrv_dir}/schema/60sshlpk.ldif":
+    source => "puppet:///modules/${module_name}/60sshlpk.ldif",
+    mode   => '0644',
+  }
+  
+  file{"${389ds::params::dirsrv_dir}/slapd-dir/schema/60sshlpk.ldif":
+    source => "puppet:///modules/${module_name}/60sshlpk.ldif",
+    mode   => '0644',
+  }
 
   file{"${389ds::params::dirsrv_dir}/setup.inf":
     content => template("${module_name}/setup.inf.erb"),
