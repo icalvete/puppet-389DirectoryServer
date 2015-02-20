@@ -8,11 +8,7 @@ class 389ds::backup (
     shell => '/bin/bash',
   }
 
-  if ! defined(File[$389ds::params::backup_dir]) {
-    file {$389ds::params::backup_dir:
-      ensure => directory,
-    }
-  }
+  ensure_resource('file', $389ds::params::backup_dir, {'ensure' => 'directory'})
 
   if $backup_local {
     cron { 'ldap_backup':
@@ -33,10 +29,10 @@ class 389ds::backup (
   }
 
   file { $389ds::params::backup_directory:
-    ensure  => 'directory',
-    owner   => $389ds::params::ds_user,
-    group   => $389ds::params::ds_group,
-    mode    => '0755',
+    ensure => 'directory',
+    owner  => $389ds::params::ds_user,
+    group  => $389ds::params::ds_group,
+    mode   => '0755',
   }
 
   file { $389ds::params::backup_directorys:
